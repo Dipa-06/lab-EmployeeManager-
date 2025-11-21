@@ -1,7 +1,3 @@
-task 7 niche 
-
-
-
 // File Name: EmployeeManager.java
 
 import java.io.*;
@@ -95,8 +91,14 @@ public class EmployeeManager {
             System.out.println("Loading data ...");
             try {
                 String[] employees = readEmployees();
-                System.out.println(employees.length + " word(s) | " +
-                        String.join(",", employees).length() + " characters");
+
+                // Word count = number of employees
+                int wordCount = employees.length;
+
+                // Character count = length of joined string without trimming spaces
+                int charCount = String.join(",", employees).length();
+
+                System.out.println(wordCount + " word(s) | " + charCount + " characters");
             } catch (Exception e) {}
             System.out.println("Data Loaded.");
         }
