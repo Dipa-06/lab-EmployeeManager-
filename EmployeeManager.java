@@ -38,8 +38,10 @@ public class EmployeeManager {
             return;
         }
 
+        String arg = args[0];
+
         // -------- LOAD (l) --------
-        if (args[0].equals("l")) {
+        if (arg.equals("l")) {
             System.out.println("Loading data ...");
             try {
                 for (String employee : readEmployees()) {
@@ -50,7 +52,7 @@ public class EmployeeManager {
         }
 
         // -------- SHOW RANDOM (s) --------
-        else if (args[0].equals("s")) {
+        else if (arg.equals("s")) {
             System.out.println("Loading data ...");
             try {
                 String[] employees = readEmployees();
@@ -61,20 +63,20 @@ public class EmployeeManager {
         }
 
         // -------- ADD (+NAME) --------
-        else if (args[0].contains("+")) {
+        else if (arg.startsWith("+")) {
             System.out.println("Loading data ...");
             try {
-                String nameInput = args[0].substring(1);
+                String nameInput = arg.substring(1);
                 writeEmployees(String.join(",", readEmployees()) + ", " + nameInput);
             } catch (Exception e) {}
             System.out.println("Data Loaded.");
         }
 
         // -------- SEARCH (?NAME) --------
-        else if (args[0].contains("?")) {
+        else if (arg.startsWith("?")) {
             System.out.println("Loading data ...");
             try {
-                String searchName = args[0].substring(1);
+                String searchName = arg.substring(1);
                 boolean found = Arrays.stream(readEmployees())
                         .map(String::trim)
                         .anyMatch(emp -> emp.equals(searchName));
@@ -87,49 +89,48 @@ public class EmployeeManager {
         }
 
         // -------- COUNT (c) --------
-        else if (args[0].contains("c")) {
+        else if (arg.equals("c")) {
             System.out.println("Loading data ...");
             try {
                 String[] employees = readEmployees();
-
-                // Word count = number of employees
                 int wordCount = employees.length;
-
-                // Character count = length of joined string without trimming spaces
                 int charCount = String.join(",", employees).length();
-
                 System.out.println(wordCount + " word(s) | " + charCount + " characters");
             } catch (Exception e) {}
             System.out.println("Data Loaded.");
         }
 
         // -------- UPDATE (uNAME) --------
-        else if (args[0].contains("u")) {
+        else if (arg.startsWith("u")) {
             System.out.println("Loading data ...");
             try {
                 String[] employees = readEmployees();
-                String nameInput = args[0].substring(1);
-
+                String nameInput = arg.substring(1);
                 for (int i = 0; i < employees.length; i++) {
                     if (employees[i].trim().equals(nameInput)) {
                         employees[i] = "Updated";
                     }
                 }
-
                 writeEmployees(String.join(",", employees));
             } catch (Exception e) {}
             System.out.println("Data Updated.");
         }
 
         // -------- DELETE (dNAME) --------
-        else if (args[0].contains("d")) {
+        else if (arg.startsWith("d")) {
             System.out.println("Loading data ...");
             try {
                 List<String> employeeList = new ArrayList<>(Arrays.asList(readEmployees()));
-                employeeList.remove(args[0].substring(1));
+                employeeList.remove(arg.substring(1));
                 writeEmployees(String.join(",", employeeList));
             } catch (Exception e) {}
             System.out.println("Data Deleted.");
+        }
+
+        // -------- INVALID ARGUMENT --------
+        else {
+            System.out.println("Invalid argument: \"" + arg + "\"");
+            System.out.println(Constants.USAGE_MESSAGE);
         }
     }
 }
